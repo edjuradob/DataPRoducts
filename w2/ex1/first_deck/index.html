@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Car classification</title>
+  <meta charset="utf-8">
+  <meta name="description" content="Car classification">
+  <meta name="author" content="Edgar Jurado">
+  <meta name="generator" content="slidify" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/default.css" media="all" >
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/phone.css" 
+    media="only screen and (max-device-width: 480px)" >
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/slidify.css" >
+  <link rel="stylesheet" href="libraries/highlighters/highlight.js/css/tomorrow.css" />
+  <base target="_blank"> <!-- This amazingness opens all links in a new tab. -->  <link rel=stylesheet href="./assets/css/ribbons.css"></link>
+
+  
+  <!-- Grab CDN jQuery, fall back to local if offline -->
+  <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.7.min.js"></script>
+  <script>window.jQuery || document.write('<script src="libraries/widgets/quiz/js/jquery.js"><\/script>')</script> 
+  <script data-main="libraries/frameworks/io2012/js/slides" 
+    src="libraries/frameworks/io2012/js/require-1.0.8.min.js">
+  </script>
+  
+  
+
+</head>
+<body style="opacity: 0">
+  <slides class="layout-widescreen">
+    
+    <!-- LOGO SLIDE -->
+        <slide class="title-slide segue nobackground">
+  <hgroup class="auto-fadein">
+    <h1>Car classification</h1>
+    <h2>classification recommendation for buying a car</h2>
+    <p>Edgar Jurado<br/>Classification for buying a car</p>
+  </hgroup>
+  <article></article>  
+</slide>
+    
+
+    <!-- SLIDES -->
+    <slide class="" id="slide-1" style="background:;">
+  <hgroup>
+    <h2>Application</h2>
+  </hgroup>
+  <article data-timings="">
+    <p>Taking the dataset in <a href="https://archive.ics.uci.edu/ml/datasets/Car+Evaluation">https://archive.ics.uci.edu/ml/datasets/Car+Evaluation</a>
+we take the data from <a href="https://archive.ics.uci.edu/ml/machine-learning-databases/car/car.data">https://archive.ics.uci.edu/ml/machine-learning-databases/car/car.data</a>, we get the information and generate a predictive model.</p>
+
+<p>The data is as follows:</p>
+
+<ol>
+<li>CAR car acceptability </li>
+<li>PRICE overall price </li>
+<li class=''>buying buying price </li>
+<li class=''>maint price of the maintenance </li>
+<li>TECH technical characteristics </li>
+<li class=''>COMFORT comfort </li>
+<li class=''>. doors number of doors </li>
+<li class=''>. persons capacity in terms of persons to carry </li>
+<li class=''>. lug_boot the size of luggage boot </li>
+<li class=''>safety estimated safety of the car </li>
+</ol>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-2" style="background:;">
+  <hgroup>
+    <h2>Classifications</h2>
+  </hgroup>
+  <article data-timings="">
+    <p>The classifications are: </p>
+
+<ol>
+<li>unacceptable - unacc</li>
+<li>acceptable - acc</li>
+<li>good - good</li>
+<li>very good - vgood</li>
+</ol>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-3" style="background:;">
+  <hgroup>
+    <h2>Parameters</h2>
+  </hgroup>
+  <article data-timings="">
+    <p>In the application you will get some selects with the options to be filled, they are shown below:</p>
+
+<ol>
+<li>buying: vhigh, high, med, low. </li>
+<li>maint: vhigh, high, med, low. </li>
+<li>doors: 2, 3, 4, 5more. </li>
+<li>persons: 2, 4, more. </li>
+<li>lug_boot: small, med, big. </li>
+<li>safety: low, med, high. </li>
+</ol>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-4" style="background:;">
+  <hgroup>
+    <h2>Prediction methods</h2>
+  </hgroup>
+  <article data-timings="">
+    <p>We get the predictions with the GBM Algorithm, with an, accuracy of 0.9766764 for recommend the buying of a car. We tried several other algorithms, as the nearest neighborn, random forests, naive bayes, etc, but the GBM was the most accurate.</p>
+
+<p>As we already have the model, we only load the file containing the results to avoid a slow load of this presentation. Then, for an example, we do a dummy test to get the prediction (remember we got an accuracy of 0.9766764 given by the confusionMatrix with 20% of test data)</p>
+
+<pre><code class="r">  load(file=&quot;modelGBM.rda&quot;)
+
+newData&lt;-data.frame(c(&quot;high&quot;), c(&quot;med&quot;),c(&quot;4&quot;),c(&quot;4&quot;),c(&quot;med&quot;),c(&quot;high&quot;))
+names(newData)&lt;-c(&quot;buying&quot;, &quot;maint&quot;,&quot;doors&quot;,&quot;persons&quot;,&quot;lug_boot&quot;,&quot;safety&quot;)
+pGBM&lt;-predict(modelGBM,newdata=newData)
+</code></pre>
+
+<p>So we get the following result:</p>
+
+<pre><code>## [1] acc
+## Levels: acc good unacc vgood
+</code></pre>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-5" style="background:;">
+  <hgroup>
+    <h2>Test application and code</h2>
+  </hgroup>
+  <article data-timings="">
+    <p>You can test the application in <a href="https://edjuradob.shinyapps.io/09_dataProducts/">https://edjuradob.shinyapps.io/09_dataProducts/</a></p>
+
+<p>The code is in <a href="https://github.com/edjuradob/DataPRoducts">https://github.com/edjuradob/DataPRoducts</a>
+In the folder w3 is the file project.R where I made all the tests for the model</p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+    <slide class="backdrop"></slide>
+  </slides>
+  <div class="pagination pagination-small" id='io2012-ptoc' style="display:none;">
+    <ul>
+      <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=1 title='Application'>
+         1
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=2 title='Classifications'>
+         2
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=3 title='Parameters'>
+         3
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=4 title='Prediction methods'>
+         4
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=5 title='Test application and code'>
+         5
+      </a>
+    </li>
+  </ul>
+  </div>  <!--[if IE]>
+    <script 
+      src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js">  
+    </script>
+    <script>CFInstall.check({mode: 'overlay'});</script>
+  <![endif]-->
+</body>
+  <!-- Load Javascripts for Widgets -->
+  
+  <!-- LOAD HIGHLIGHTER JS FILES -->
+  <script src="libraries/highlighters/highlight.js/highlight.pack.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  <!-- DONE LOADING HIGHLIGHTER JS FILES -->
+   
+  </html>
